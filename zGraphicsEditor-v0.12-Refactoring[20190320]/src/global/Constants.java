@@ -1,8 +1,6 @@
 package global;
 
-import shape.Ellipse;
 import shape.Rectangle;
-import shape.Select;
 import shape.Shape;
 
 public class Constants {
@@ -22,9 +20,9 @@ public class Constants {
 	}
 
 	public enum EToolBar {
-		select("선택", new Select()),//select는 0,스트링으로 “select”도 가짐
 		rect("네모", new Rectangle()),
-		ellipse("원", new Ellipse()),
+		rect1("네모", new Rectangle()),
+		rect2("네모", new Rectangle()),
 		;
 		private String text;
 		private Shape shape;
