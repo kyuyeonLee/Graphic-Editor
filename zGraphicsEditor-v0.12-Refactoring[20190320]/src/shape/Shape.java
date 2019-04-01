@@ -14,7 +14,17 @@ public abstract class Shape{
 		this.x2 = x;
 		this.y2 = y;
 	}
-	public void addPoint(int x, int y) {
+	public void addPoint(int x, int y) {}
+	
+	public Shape clone() {
+		try {
+			return (Shape)this.getClass().newInstance();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	abstract public void draw(Graphics g);
 }

@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.Vector;
 
 import javax.swing.JPanel;
 
@@ -14,16 +15,13 @@ import shape.Shape;
 public class DrawingPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private enum EActionState {
-		eReady, eCMCDrawing, ePDRDrawing
-	};
-
+	private enum EActionState {eReady,  e2PDrawing, eNPDrawing};
 	private EActionState eActionState;
-
-	public static final Enum<EToolBar> eToolBar = null;
 	MouseHandler mouseHandler;
+	
+	private Vector<Shape> shapeVector;
+	private Shape currentShape;
 	private Shape currentTool;
-
 	public void setCurrentTool(EToolBar CurrenTool) {
 		this.currentTool = CurrenTool.getShape();
 	}
@@ -36,35 +34,39 @@ public class DrawingPanel extends JPanel {
 		mouseHandler = new MouseHandler();
 		this.addMouseListener(this.mouseHandler);
 		this.addMouseMotionListener(this.mouseHandler);
-		currentTool = EToolBar.rect.getShape();
+		
+		this.shapeVector = new Vector<Shape>();
+		this.currentTool = EToolBar.rect.getShape();
 	}
-
+	
+	public void paint(Graphics graphics) {
+		super.paint(graphics);
+		for (Shape shape: this.shapeVector) {
+			shape.draw(graphics);
+		}
+	}
 	public void drawShape() {
 		Graphics graphics = this.getGraphics();
 		graphics.setXORMode(getBackground());
-		this.currentTool.draw(graphics);
+		this.currentShape.draw(graphics);
 	}
 
 	public void initDrawing(int x, int y) {
-		this.currentTool.setOrigin(x, y); // 그림을 그릴 준비를 하는 것 initDraw
+		// 그림을 그릴 준비를 하는 것 initDraw
+		this.currentShape = this.currentTool.clone();
+		this.currentShape.setOrigin(x, y); 
 		this.drawShape();
 	}
-
 	public void keepDrawing(int x, int y) {
 		this.drawShape();
-		this.currentTool.setPoint(x, y);
+		this.currentShape.setPoint(x, y);
 		this.drawShape();
 	}
-
 	private void continuedrawing(int x, int y) {
-		this.currentTool.addPoint(x, y);
-
+		this.currentShape.addPoint(x, y);
 	}
-
 	private void finishDrawing(int x, int y) {
-//		this.drawShape();
-//		this.currentTool.setPoint(x, y);
-//		this.drawShape();
+		this.shapeVector.add(this.currentShape);
 	}
 
 	private class MouseHandler implements MouseListener, MouseMotionListener {
@@ -80,47 +82,49 @@ public class DrawingPanel extends JPanel {
 		public void mouse1Clicked(MouseEvent e) {
 			if (eActionState == EActionState.eReady) {
 				initDrawing(e.getX(), e.getY());
-				eActionState = EActionState.eCMCDrawing;
-			} else if (eActionState == EActionState.eCMCDrawing) {
-				finishDrawing(e.getX(), e.getY());
-				eActionState = EActionState.eReady;
+				eActionState = EActionState.eNPDrawing;
+			}else if (eActionState == EActionState.eNPDrawing){
+				continuedrawing(e.getX(), e.getY());
 			}
 		}
 
 		public void mouse2Clicked(MouseEvent e) {
+			if (eActionState == EActionState.eNPDrawing) {
+					finishDrawing(e.getX(), e.getY());
+					eActionState = EActionState.eReady;
+				}
 		}
 
-		public void mouseMoved(MouseEvent e) {// 그림을 그리는 경우에만 작동하게 만들어야한다.
-			if (eActionState == EActionState.eCMCDrawing) {
-				keepDrawing(e.getX(), e.getY());
-			}
+		public void mouseMoved(MouseEvent e) {
+			 if(eActionState == EActionState.eNPDrawing) {
+					keepDrawing(e.getX(), e.getY());
+				}
 		}
 
+		
+		
 		// Press-Drag-Release Drawing
 		public void mousePressed(MouseEvent e) {
 			if (eActionState == EActionState.eReady) {
 				initDrawing(e.getX(), e.getY());
-				eActionState = EActionState.ePDRDrawing;
+				eActionState = EActionState.e2PDrawing;
 			}
 		}
 
 		public void mouseDragged(MouseEvent e) {
-			if (eActionState == EActionState.ePDRDrawing) {
+			if (eActionState == EActionState.e2PDrawing) {
 				keepDrawing(e.getX(), e.getY());
 			}
 		}
 
 		public void mouseReleased(MouseEvent e) {
-			if (eActionState == EActionState.ePDRDrawing) {
+			if (eActionState == EActionState.e2PDrawing) {
 				finishDrawing(e.getX(), e.getY());
 				eActionState = EActionState.eReady;
 			}
 		}
 
-		public void mouseEntered(MouseEvent e) {
-		}
-
-		public void mouseExited(MouseEvent e) {
-		}
+		public void mouseEntered(MouseEvent e) {}
+		public void mouseExited(MouseEvent e) {}
 	}
 }
