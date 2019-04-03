@@ -40,4 +40,10 @@ public class MainFrame extends JFrame {
 
 	}
 
+	public void initialize() {
+		this.menuBar.initialize();
+		this.toolBar.initialize();
+		this.drawingPanel.initialize();
+	}
+
 }

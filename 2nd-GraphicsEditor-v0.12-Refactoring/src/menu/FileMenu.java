@@ -15,5 +15,12 @@ public class FileMenu extends JMenu {
 		this.newItem = new JMenuItem(EFileMenu.newItem.getText());
 		this.add(newItem);
 	}
+
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 	
 }

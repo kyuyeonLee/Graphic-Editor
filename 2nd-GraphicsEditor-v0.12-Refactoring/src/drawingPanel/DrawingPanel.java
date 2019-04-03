@@ -10,7 +10,7 @@ import java.util.Vector;
 import javax.swing.JPanel;
 
 import global.Constants.EToolBar;
-import shape.Shape;
+import shape.GShape;
 
 public class DrawingPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -19,9 +19,9 @@ public class DrawingPanel extends JPanel {
 	private EActionState eActionState;
 	MouseHandler mouseHandler;
 	
-	private Vector<Shape> shapeVector;
-	private Shape currentShape;
-	private Shape currentTool;
+	private Vector<GShape> shapeVector;
+	private GShape currentShape;
+	private GShape currentTool;
 	public void setCurrentTool(EToolBar CurrenTool) {
 		this.currentTool = CurrenTool.getShape();
 	}
@@ -35,13 +35,16 @@ public class DrawingPanel extends JPanel {
 		this.addMouseListener(this.mouseHandler);
 		this.addMouseMotionListener(this.mouseHandler);
 		
-		this.shapeVector = new Vector<Shape>();
-		this.currentTool = EToolBar.rect.getShape();
+		this.shapeVector = new Vector<GShape>();
+	}
+	public void initialize() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	public void paint(Graphics graphics) {
 		super.paint(graphics);
-		for (Shape shape: this.shapeVector) {
+		for (GShape shape: this.shapeVector) {
 			shape.draw(graphics);
 		}
 	}
@@ -50,7 +53,16 @@ public class DrawingPanel extends JPanel {
 		graphics.setXORMode(getBackground());
 		this.currentShape.draw(graphics);
 	}
-
+	private boolean onShape(int x, int y) {
+		currentShape = null;
+		for(GShape shape: this.shapeVector) {
+			if(shape.contains(x, y)) {
+				this.currentShape = shape;
+				return true;
+			}
+		}
+		return false;
+	}
 	public void initDrawing(int x, int y) {
 		// 그림을 그릴 준비를 하는 것 initDraw
 		this.currentShape = this.currentTool.clone();
@@ -105,15 +117,23 @@ public class DrawingPanel extends JPanel {
 		
 		// Press-Drag-Release Drawing
 		public void mousePressed(MouseEvent e) {
+			
 			if (eActionState == EActionState.eReady) {
-				initDrawing(e.getX(), e.getY());
-				eActionState = EActionState.e2PDrawing;
+				if(onshape(e.getX(), e.getY())) {
+					initMoving(e.getX(), e.getY());
+					eActionState = EActionState.eMoving;
+				}else {
+					initDrawing(e.getX(), e.getY());
+					eActionState = EActionState.e2PDrawing;
+				}
 			}
 		}
 
 		public void mouseDragged(MouseEvent e) {
 			if (eActionState == EActionState.e2PDrawing) {
 				keepDrawing(e.getX(), e.getY());
+			}else if(eActionState == EActionState.){
+				
 			}
 		}
 
@@ -127,4 +147,5 @@ public class DrawingPanel extends JPanel {
 		public void mouseEntered(MouseEvent e) {}
 		public void mouseExited(MouseEvent e) {}
 	}
+
 }
