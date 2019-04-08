@@ -1,10 +1,10 @@
 package main;
 
-public class Main {
+public class GMain {
 
-	static MainFrame mainFrame;
+	static GMainFrame mainFrame;
 	public static void main(String[] args) {
-		mainFrame = new MainFrame();
+		mainFrame = new GMainFrame();
 		mainFrame.initialize();
 		mainFrame.setVisible(true);
 	}

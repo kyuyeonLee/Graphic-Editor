@@ -9,13 +9,13 @@ import java.util.Vector;
 
 import javax.swing.JPanel;
 
-import global.Constants.EToolBar;
+import global.GConstants.EToolBar;
 import shape.GShape;
 
-public class DrawingPanel extends JPanel {
+public class GDrawingPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	private enum EActionState {eReady,  e2PDrawing, eNPDrawing};
+	private enum EActionState {eReady,  e2PDrawing, eNPDrawing, eMoving};
 	private EActionState eActionState;
 	MouseHandler mouseHandler;
 	
@@ -26,7 +26,7 @@ public class DrawingPanel extends JPanel {
 		this.currentTool = CurrenTool.getShape();
 	}
 
-	public DrawingPanel() {
+	public GDrawingPanel() {
 		this.eActionState = EActionState.eReady;
 
 		this.setBackground(Color.WHITE);
@@ -119,8 +119,8 @@ public class DrawingPanel extends JPanel {
 		public void mousePressed(MouseEvent e) {
 			
 			if (eActionState == EActionState.eReady) {
-				if(onshape(e.getX(), e.getY())) {
-					initMoving(e.getX(), e.getY());
+				if(onShape(e.getX(), e.getY())) {
+					initDrawing(e.getX(), e.getY());
 					eActionState = EActionState.eMoving;
 				}else {
 					initDrawing(e.getX(), e.getY());
@@ -132,7 +132,7 @@ public class DrawingPanel extends JPanel {
 		public void mouseDragged(MouseEvent e) {
 			if (eActionState == EActionState.e2PDrawing) {
 				keepDrawing(e.getX(), e.getY());
-			}else if(eActionState == EActionState.){
+			}else if(eActionState == EActionState.eMoving){
 				
 			}
 		}

@@ -4,7 +4,7 @@ import shape.GRectangle;
 import shape.GPolygon;
 import shape.GShape;
 
-public class Constants {
+public class GConstants {
 
 	public enum EMainFrame {
 		x(200),

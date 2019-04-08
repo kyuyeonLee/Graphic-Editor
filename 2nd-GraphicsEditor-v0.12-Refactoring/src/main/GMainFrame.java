@@ -4,34 +4,34 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
-import drawingPanel.DrawingPanel;
-import global.Constants.EMainFrame;
-import menu.MenuBar;
-import toolBar.ToolBar;
+import drawingPanel.GDrawingPanel;
+import global.GConstants.EMainFrame;
+import menu.GMenuBar;
+import toolBar.GToolBar;
 
 @SuppressWarnings("serial")
-public class MainFrame extends JFrame {
+public class GMainFrame extends JFrame {
 
 	// Component = 안에서 new를 하면 된다.
-	private MenuBar menuBar;
-	private ToolBar toolBar;
-	private DrawingPanel drawingPanel;
+	private GMenuBar menuBar;
+	private GToolBar toolBar;
+	private GDrawingPanel drawingPanel;
 
-	public MainFrame() {
+	public GMainFrame() {
 		// attributes
 		this.setLocation(EMainFrame.x.getvalue(), EMainFrame.y.getvalue());
 		this.setSize(EMainFrame.w.getvalue(), EMainFrame.h.getvalue());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// components
-		this.menuBar = new MenuBar();
+		this.menuBar = new GMenuBar();
 		this.setJMenuBar(this.menuBar);
 
 		this.setLayout(new BorderLayout());
-		this.toolBar = new ToolBar();
+		this.toolBar = new GToolBar();
 		this.add(this.toolBar, BorderLayout.NORTH);
 
-		this.drawingPanel = new DrawingPanel();
+		this.drawingPanel = new GDrawingPanel();
 		this.add(this.drawingPanel, BorderLayout.CENTER);
 
 		// association
