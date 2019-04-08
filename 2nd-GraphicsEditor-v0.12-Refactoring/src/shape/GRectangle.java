@@ -1,7 +1,5 @@
 package shape;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public class GRectangle extends GShape {
@@ -9,7 +7,7 @@ public class GRectangle extends GShape {
 
 	public GRectangle() {
 		super();
-		this.rectangle = new Rectangle();
+		this.shape = new Rectangle();
 		this.rectangle = (java.awt.Rectangle)this.shape;
 	}
 	
@@ -25,5 +23,17 @@ public class GRectangle extends GShape {
 
 	}
 
+	public void keepMoving(int x, int y) {
+		int dw = x - px;
+		int dh = y - py;
+		
+		this.rectangle.setLocation(this.rectangle.x+dw, this.rectangle.y+dh);
+		
+		this.px = x;
+		this.py = y;
+	}
+
+	public void finishMoving(int x, int y) {
+	}
 	
 }
